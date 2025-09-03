@@ -44,7 +44,8 @@ def load_pdf_files(uploaded_files):
     retriever_tool = create_retriever_tool(
         retriever,
         name="pdf_search",
-        description="Search for information from the uploaded PDF files"
+        description="This tool gives you direct access to the uploaded PDF documents. "
+                "Always use this tool first when the question might be answered from the PDFs."
     )
     return retriever_tool
 
@@ -58,10 +59,11 @@ def build_agent(tools):
     prompt = ChatPromptTemplate.from_messages([
         ("system",
         "Be sure to answer in Korean. You are a helpful assistant. "
-        "Make sure to use the `pdf_search` tool for searching information from the pdf document."
-        "Please always include emojis in your responses with a friendly tone."
-        "If you can't find the information from the PDF document, use the `web_search` tool for searching information from the web."
-        "Always answer in Korean with a professional and friendly tone."),
+        "All uploaded PDFs are fully indexed and always available through the `pdf_search` tool. "
+        "If the question can be answered from the uploaded PDFs, you must call ONLY `pdf_search`. "
+        "Use `web_search` ONLY if the information is clearly not in the PDFs. "
+        "Never call both tools in one response. "
+        "Always answer in Korean with a professional and friendly tone with emojis."),
         ("placeholder", "{chat_history}"),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}")
