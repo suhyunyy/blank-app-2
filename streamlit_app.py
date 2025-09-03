@@ -1,5 +1,3 @@
-%%writefile chatbot.py
-
 import os
 import streamlit as st
 import tempfile
