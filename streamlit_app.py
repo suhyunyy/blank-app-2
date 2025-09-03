@@ -55,9 +55,8 @@ def build_agent(tools):
 
     prompt = ChatPromptTemplate.from_messages([
         ("system",
-         "You are a helpful assistant for KEPCO KDN employees. "
-         "If the answer is in the PDF, call `pdf_search`. "
-         "Otherwise, call `web_search`. "
+         "You must always try `pdf_search` first when PDF files are uploaded. "
+         "If nothing is found, then use `web_search`."
          "Always answer in Korean with a professional and friendly tone."),
         ("placeholder", "{chat_history}"),
         ("human", "{input}"),
