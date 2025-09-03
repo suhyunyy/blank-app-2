@@ -58,12 +58,11 @@ def build_agent(tools):
 
     prompt = ChatPromptTemplate.from_messages([
         ("system",
-        "Be sure to answer in Korean. You are a helpful assistant. "
-        "All uploaded PDFs are fully indexed and always available through the `pdf_search` tool. "
-        "If the question can be answered from the uploaded PDFs, you must call ONLY `pdf_search`. "
-        "Use `web_search` ONLY if the information is clearly not in the PDFs. "
-        "Never call both tools in one response. "
-        "Always answer in Korean with a professional and friendly tone with emojis."),
+        "You are a helpful assistant for KEPCO KDN employees. "
+        "First, always try `pdf_search`. "
+        "If `pdf_search` returns no relevant results, immediately call ONLY `web_search`. "
+        "Never mix the two tools. "
+        "Answer in Korean with a professional and friendly tone, including emojis."),
         ("placeholder", "{chat_history}"),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}")
