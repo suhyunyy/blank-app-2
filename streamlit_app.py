@@ -36,8 +36,6 @@ def load_pdf_files(uploaded_files):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     split_docs = text_splitter.split_documents(all_documents)
 
-    #st.write(split_docs[0].page_content[:500])
-
     vector = FAISS.from_documents(split_docs, OpenAIEmbeddings())
     retriever = vector.as_retriever(search_kwargs={"k": 5})
 
@@ -45,7 +43,7 @@ def load_pdf_files(uploaded_files):
         retriever,
         name="pdf_search",
         description="This tool gives you direct access to the uploaded PDF documents. "
-                "Always use this tool first when the question might be answered from the PDFs."
+                    "Always use this tool first when the question might be answered from the PDFs."
     )
     return retriever_tool
 
@@ -58,11 +56,11 @@ def build_agent(tools):
 
     prompt = ChatPromptTemplate.from_messages([
         ("system",
-        "You are a helpful assistant for KEPCO KDN employees. "
-        "First, always try `pdf_search`. "
-        "If `pdf_search` returns no relevant results, immediately call ONLY `web_search`. "
-        "Never mix the two tools. "
-        "Answer in Korean with a professional and friendly tone, including emojis."),
+         "You are a helpful assistant for KEPCO KDN employees. "
+         "First, always try `pdf_search`. "
+         "If `pdf_search` returns no relevant results, immediately call ONLY `web_search`. "
+         "Never mix the two tools. "
+         "Answer in Korean with a professional and friendly tone, including emojis."),
         ("placeholder", "{chat_history}"),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}")
@@ -74,22 +72,12 @@ def build_agent(tools):
 
 
 # --------------------------------------------------------------------
-# 4. Agent 실행 함수
+# 4. Agent 실행 함수 (툴 사용 내역 제거)
 # --------------------------------------------------------------------
 def ask_agent(agent_executor, question: str):
     result = agent_executor.invoke({"input": question})
     answer = result["output"]
-
-    used_tools = []
-    for step in result.get("intermediate_steps", []):
-        tool_name = step[0].tool
-        obs = step[1]
-
-        if obs and len(str(obs).strip()) > 30:
-            used_tools.append(tool_name)
-
-    used_tools = list(set(used_tools))
-    return f" 답변:\n{answer}\n\n 사용된 툴: {', '.join(used_tools) if used_tools else '없음'}"
+    return f"답변:\n{answer}"
 
 
 # --------------------------------------------------------------------
