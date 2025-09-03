@@ -36,8 +36,10 @@ def load_pdf_files(uploaded_files):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     split_docs = text_splitter.split_documents(all_documents)
 
+    st.write(split_docs[0].page_content[:500])
+
     vector = FAISS.from_documents(split_docs, OpenAIEmbeddings())
-    retriever = vector.as_retriever()
+    retriever = vector.as_retriever(search_kwargs={"k": 5})
 
     retriever_tool = create_retriever_tool(
         retriever,
