@@ -36,7 +36,7 @@ def load_pdf_files(uploaded_files):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     split_docs = text_splitter.split_documents(all_documents)
 
-    st.write(split_docs[0].page_content[:500])
+    #st.write(split_docs[0].page_content[:500])
 
     vector = FAISS.from_documents(split_docs, OpenAIEmbeddings())
     retriever = vector.as_retriever(search_kwargs={"k": 5})
@@ -57,9 +57,10 @@ def build_agent(tools):
 
     prompt = ChatPromptTemplate.from_messages([
         ("system",
-         "You must always try `pdf_search` first when PDF files are uploaded. "
-         "If nothing is found, then use `web_search`."
-         "Always answer in Korean with a professional and friendly tone."),
+         "You are a helpful assistant for KEPCO KDN employees. "
+         "Always search the PDF first using `pdf_search`. "
+         "Only if the PDF does not contain relevant information, then use `web_search`. "
+         "Prefer Korean answers with a professional and friendly tone."),
         ("placeholder", "{chat_history}"),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}")
