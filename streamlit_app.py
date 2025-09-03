@@ -104,6 +104,11 @@ def ask_agent(agent_executor, question: str):
 
         if tool_name == "csv_repl":
             used_tools.append(tool_name)
+            import pandas as pd
+            if isinstance(obs, pd.DataFrame):
+                st.dataframe(obs)
+            else:
+                st.write(obs)
         else:
             if obs and len(str(obs).strip()) > 30:
                 used_tools.append(tool_name)
