@@ -117,7 +117,7 @@ def ask_agent(agent_executor, question: str):
 # --------------------------------------------------------------------
 def main():
     st.set_page_config(page_title="한전KDN AI 비서", layout="wide", page_icon="🤖")
-    st.image('/data/kdn_image.jpg', width=800)
+    st.image('data/kdn_image.jpg', width=800)
     st.markdown('---')
     st.title("안녕하세요! RAG + Web + CSV를 활용한 '한전KDN AI 비서' 입니다")  
 
